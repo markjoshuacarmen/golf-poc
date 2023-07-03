@@ -7,6 +7,7 @@ dotenv.config
 import connectDB from './db/connect'
 
 // routers
+import authRouter from './routes/authRouter'
 
 // middlewares
 import notFoundMiddleware from './middleware/not-found'
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {
     res.send('Hello World')
     // throw new Error()
 })
+
+app.use('/api/v1/auth', authRouter)
 
 app.use(notFoundMiddleware)
 app.use(errorHandlerMiddleware)
