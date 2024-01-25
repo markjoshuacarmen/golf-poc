@@ -1,12 +1,8 @@
-import express from 'express'
-const router = express.Router()
+import express from 'express';
+import { loginController } from '../controllers/auth.controller';
 
-import { registerUser, loginUser, updateUser } from '../controllers/authController'
-import {CatController} from '../cats'
+const router = express.Router();
 
-router.route('/register').post(registerUser)
-router.route('/login').post(loginUser)
-router.route('/update').patch(updateUser)
-router.route('/cat').get(CatController)
+router.post('/login', loginController);
 
 export default router;
