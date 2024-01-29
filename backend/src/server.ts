@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import mysql, { MysqlError, OkPacket } from 'mysql';
 import cors from 'cors';
+import courseRoutes from '../src/courses';
 
 const app = express();
 app.use(cors());
@@ -16,7 +17,7 @@ const db = mysql.createConnection({
 app.get('/', (req: Request, res: Response) => {
   return res.json('from backend side');
 });
-
+ 
 app.post('/login', (req: Request, res: Response) => {
   const { login_id, password } = req.body;
 
@@ -34,43 +35,46 @@ app.post('/login', (req: Request, res: Response) => {
   });
 });
 
-app.get('/courses', (req: Request, res: Response) => {
-  const sql = 'SELECT * FROM courses';
-  db.query(sql, (err: MysqlError | null, data: any[]) => {
-    if (err) {
-      return res.json(err);
-    }
+// app.get('/courses', (req: Request, res: Response) => {
+//   const sql = 'SELECT * FROM courses';
+//   db.query(sql, (err: MysqlError | null, data: any[]) => {
+//     if (err) {
+//       return res.json(err);
+//     }
 
-    if (data.length === 0) {
-      return res.json({ message: 'No data found' });
-    }
+//     if (data.length === 0) {
+//       return res.json({ message: 'No data found' });
+//     }
 
-    return res.json(data);
-  });
-});
+//     return res.json(data);
+//   });
+// });
 
-app.post('/createCourse', (req: Request, res: Response) => {
-  const { course_name, rating, slope, is_active } = req.body;
 
-  const insertCourseSql = `
-    INSERT INTO courses 
-    (course_name, rating, slope, is_active, created_time, update_time) 
-    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
-  `;
+app.use('/courses', courseRoutes);
 
-  db.query(
-    insertCourseSql,
-    [course_name, rating, slope, is_active],
-    (err: MysqlError | null, result: OkPacket) => {
-      if (err) {
-        console.error('Error inserting course:', err);
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
+// app.post('/createCourse', (req: Request, res: Response) => {
+//   const { course_name, rating, slope, is_active } = req.body;
+ 
+//   const insertCourseSql = `
+//     INSERT INTO courses 
+//     (course_name, rating, slope, is_active, created_time, update_time) 
+//     VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP())
+//   `;
 
-      return res.json({ message: 'Course added successfully', courseId: result.insertId });
-    }
-  );
-});
+//   db.query(
+//     insertCourseSql,
+//     [course_name, rating, slope, is_active],
+//     (err: MysqlError | null, result: OkPacket) => {
+//       if (err) {
+//         console.error('Error inserting course:', err);
+//         return res.status(500).json({ message: 'Internal Server Error' });
+//       }
+
+//       return res.json({ message: 'Course added successfully', courseId: result.insertId });
+//     }
+//   );
+// });
 
 const port = 8081;
 app.listen(port, () => {
