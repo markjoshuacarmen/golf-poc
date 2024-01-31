@@ -1,22 +1,27 @@
 import { Request, Response } from 'express';
-import CourseService from './courses.service';
+import { getCourses, createCourse } from './courses.service';
+import { verifyToken } from '../middleware/jwt.middleware';
 
 class CoursesController {
-  static async createCourse(req: Request, res: Response): Promise<void> {
+  static async getCourses(req: Request, res: Response): Promise<void> {
     try {
-      const result = await CourseService.createCourse(req.body);
-      res.json(result);
+      const data = await getCourses();
+      res.json(data);
     } catch (error) {
-      console.error('Error creating course:', error);
+      console.error('Error getting courses:', error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
-  static async getCourses(req: Request, res: Response): Promise<void> {
+
+  static async createCourse(req: Request, res: Response): Promise<void> {
     try {
-      const result = await CourseService.getCourses();
+      const { course_name, rating, slope, is_active } = req.body;
+      const created_by = (req as any).user.user_id;
+
+      const result = await createCourse({ course_name, rating, slope, is_active }, created_by);
       res.json(result);
     } catch (error) {
-      console.error('Error getting courses:', error);
+      console.error('Error creating course:', error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }

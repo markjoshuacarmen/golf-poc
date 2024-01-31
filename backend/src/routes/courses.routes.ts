@@ -1,10 +1,10 @@
 import express from 'express';
-import { getCoursesController, createCourseController } from '../controllers/courses.controller';
-import { authenticationMiddleware } from '../middleware/auth.middleware';
+import { verifyToken } from '../middleware/jwt.middleware';
+import CoursesController from '../courses/courses.controller';
 
 const router = express.Router();
 
-router.get('/courses', authenticationMiddleware, getCoursesController);
-router.post('/createCourse', authenticationMiddleware, createCourseController);
+router.get('/', CoursesController.getCourses);
+router.post('/createCourse', verifyToken, CoursesController.createCourse);
 
-export default router;
+export default router; 
