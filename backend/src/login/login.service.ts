@@ -3,8 +3,8 @@ import mysql, { MysqlError } from 'mysql';
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'password',
-  database: 'golfschema',
+  password: '',
+  database: 'golf',
 });
 
 export const authenticateUser = (login_id: string, password: string): Promise<any> => {

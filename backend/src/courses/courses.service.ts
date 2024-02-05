@@ -10,7 +10,7 @@ export const getCourses = (): Promise<any> => {
       }
 
       if (data.length === 0) {
-        resolve({ message: 'No data found' });
+        resolve({ message: 'No data found' }); 
       }
 
       resolve(data);
@@ -20,8 +20,9 @@ export const getCourses = (): Promise<any> => {
 
 export const createCourse = (
   courseData: any,
-  created_by: number
+  user: any
 ): Promise<{ message: string; courseId?: number }> => {
+  console.log('User in createCourse:', user);
   const { course_name, rating, slope, is_active } = courseData;
 
   const insertCourseSql = `
@@ -30,18 +31,22 @@ export const createCourse = (
     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP(), ?, CURRENT_TIMESTAMP())
   `;
 
-  return new Promise((resolve, reject) => {
+  return new Promise<{ message: string; courseId?: number }>((resolve, reject) => {
     db.query(
       insertCourseSql,
-      [course_name, rating, slope, is_active, created_by, created_by],
+      [course_name, rating, slope, is_active, user.created_by, user.updated_by],
       (err: MysqlError | null, result: OkPacket) => {
         if (err) {
           console.error('Error inserting course:', err);
           reject({ message: 'Internal Server Error' });
+        } else {
+          resolve({ message: 'Course added successfully', courseId: result.insertId });
         }
-
-        resolve({ message: 'Course added successfully', courseId: result.insertId });
       }
     );
+  })
+  .catch((error) => {
+    console.error('Error in createCourse:', error);
+    throw error; 
   });
 };
