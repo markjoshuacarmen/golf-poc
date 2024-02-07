@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { createCourseHandicap, getCourseHandicaps } from './courseHandicap.service';
-
 class CourseHandicapController {
   static async getCourseHandicaps(req: Request, res: Response): Promise<void> {
     try {

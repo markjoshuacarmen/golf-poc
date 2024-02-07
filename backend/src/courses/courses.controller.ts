@@ -25,9 +25,9 @@ class CoursesController {
         );
         res.json(result);
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error creating course:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ message: error.message }); 
     }
   }
 }
