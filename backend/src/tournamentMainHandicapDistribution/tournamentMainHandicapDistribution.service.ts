@@ -1,8 +1,8 @@
 import { MysqlError, OkPacket } from 'mysql';
 import db from '../db/connect';
 
-export const getTournamentCrossoverReturn = (): Promise<any> => {
-    const sql = 'SELECT * FROM tournaments_crossover_return';
+export const getTournamentMainHandicapDistribution = (): Promise<any> => {
+    const sql = 'SELECT * FROM tournaments_main_handicap_distribution';
     return new Promise((resolve, reject) => {
       db.query(sql, (err: MysqlError | null, data: any[]) => {
         if (err) {
@@ -15,10 +15,10 @@ export const getTournamentCrossoverReturn = (): Promise<any> => {
     });
   };
 
-export const createTournamentCrossoverReturn = (
-  tournamentCrossoverReturnData: any,
+export const createTournamentMainHandicapDistribution = (
+  tournamentMainHandicapDistributionData: any,
   user: any
-): Promise<{ message: string; tournamentCrossoverReturnId?: number }> => {
+): Promise<{ message: string; tournamentMainHandicapDistributionId?: number }> => {
   const {
     tournament_id,
     player_id,
@@ -40,26 +40,26 @@ export const createTournamentCrossoverReturn = (
     hole_16,
     hole_17,
     hole_18,
-    total_win_loss,
-    par_3,
-    par_4,
-    par_5,
-    total_hole_won,
+    in_score,
+    out_score,
+    total_score,
+    proof,
     is_active
-  } = tournamentCrossoverReturnData;
+  } = tournamentMainHandicapDistributionData;
 
-  const insertTournamentCrossoverReturnSql = `
-    INSERT INTO tournaments_crossover_return
+  const insertTournamentMainHandicapDistributionSql = `
+    INSERT INTO tournaments_main_handicap_distribution
     (
       tournament_id, player_id, hole_1, hole_2, hole_3, hole_4, hole_5, hole_6, hole_7, hole_8, hole_9,
-      hole_10, hole_11, hole_12, hole_13, hole_14, hole_15, hole_16, hole_17, hole_18, total_win_loss, par_3, par_4, par_5, total_hole_won, is_active, created_by, created_time, update_by, update_time
+      hole_10, hole_11, hole_12, hole_13, hole_14, hole_15, hole_16, hole_17, hole_18, in_score, out_score, total_score, proof, is_active,
+      created_by, created_time, update_by, update_time
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(), ?, CURRENT_TIMESTAMP())
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP(), ?, CURRENT_TIMESTAMP())
   `;
 
-  return new Promise<{ message: string; tournamentCrossoverReturnId?: number }>((resolve, reject) => {
+  return new Promise<{ message: string; tournamentMainHandicapDistributionId?: number }>((resolve, reject) => {
     db.query(
-      insertTournamentCrossoverReturnSql,
+      insertTournamentMainHandicapDistributionSql,
       [
         tournament_id,
         player_id,
@@ -81,22 +81,21 @@ export const createTournamentCrossoverReturn = (
         hole_16,
         hole_17,
         hole_18,
-        total_win_loss,
-        par_3,
-        par_4,
-        par_5,
-        total_hole_won,
+        in_score,
+        out_score,
+        total_score,
+        proof,
         is_active,
         user.id,
         user.id
       ],
       (err: MysqlError | null, result: OkPacket) => {
         if (err) {
-          console.error('Error inserting tournament crossover return', err);
+          console.error('Error inserting tournament main handicap distribution:', err);
           reject({ message: 'Internal Server Error' });
         }
 
-        resolve({ message: 'Tournament crossover return added successfully', tournamentCrossoverReturnId: result.insertId });
+        resolve({ message: 'Tournament main handicap distribution added successfully', tournamentMainHandicapDistributionId: result.insertId });
       }
     );
   });
