@@ -4,11 +4,11 @@ import { createCoursePar, getCoursePars } from './coursePar.service';
 class CourseParController {
   static async getCoursePars(req: Request, res: Response): Promise<void> {
     try {
-      const data = await getCoursePars();
+      const data = await getCoursePars(); 
       res.json(data);
     } catch (error) {
       console.error('Error getting course pars:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ message: 'Error getting course par' });
     }
   }
 
@@ -21,10 +21,9 @@ class CourseParController {
       res.json(result);
     } catch (error) {
       console.error('Error creating course par:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ message: 'Error creating course par' });
     }
   }
-  
 }
 
 export default CourseParController;

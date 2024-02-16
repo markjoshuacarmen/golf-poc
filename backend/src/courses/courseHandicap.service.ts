@@ -67,8 +67,7 @@ export const createCourseHandicap = (
       hole_17,
       hole_18
     );
-    console.log('handicapData:', handicapData);
-  
+
     const checkCourseSql = 'SELECT * FROM courses WHERE id = ?';
     const courseId = parseInt(course_id, 10);
     return new Promise<{ message: string; handicapId?: number }>((resolve, reject) => {

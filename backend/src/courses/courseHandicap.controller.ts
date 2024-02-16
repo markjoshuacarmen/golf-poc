@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { createCourseHandicap, getCourseHandicaps } from './courseHandicap.service';
+
 class CourseHandicapController {
   static async getCourseHandicaps(req: Request, res: Response): Promise<void> {
     try {
@@ -7,7 +8,7 @@ class CourseHandicapController {
       res.json(data);
     } catch (error) {
       console.error('Error getting course handicaps:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ message: 'Error getting course Par' });
     }
   }
 
@@ -20,7 +21,7 @@ class CourseHandicapController {
       res.json(result);
     } catch (error) {
       console.error('Error creating course handicap:', error);
-      res.status(500).json({ message: 'Internal Server Error' });
+      res.status(500).json({ message: 'Error creating course handicap' });
     }
   }
 }
