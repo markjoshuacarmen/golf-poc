@@ -3,6 +3,7 @@ import db from '../db/connect';
 
 export const getCourses = (): Promise<any> => {
   const sql = 'SELECT * FROM courses';
+  console.log('SQL Query:', sql); // Log the SQL query
   return new Promise((resolve, reject) => {
     db.query(sql, (err: MysqlError | null, data: any[]) => {
       if (err) {
@@ -18,9 +19,25 @@ export const getCourses = (): Promise<any> => {
   });
 };
 
+export const getCourseById = (id: number): Promise<any> => {
+  const sql = 'SELECT * FROM courses WHERE id = ?';
+  console.log('SQL Query:', sql); // Log the SQL query
+  return new Promise((resolve, reject) => {
+    db.query(sql, [id], (err: MysqlError | null, data: any[]) => {
+      if (err) {
+        reject(err);
+      }
+      if (data.length === 0) {
+        resolve(null); // Resolve null if no course found
+      }
+      resolve(data[0]); // Resolve the first course found (assuming id is unique)
+    });
+  });
+};
 export const createCourse = (
   courseData: any,
   user: any
+  
 ): Promise<{ message: string; courseId?: number }> => {
   console.log('User in createCourse:', user);
   const { course_name, rating, slope, is_active } = courseData;

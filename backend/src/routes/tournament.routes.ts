@@ -10,6 +10,7 @@ import TournamentMainNetOverUnderController from '../tournamentMainNetOverUnder/
 import TournamentMainScoreController from '../tournamentMainScore/tournamentMainScore.controller';
 import TournamentMainWinnerCarryResultController from '../tournamentMainWinnerCarryResult/tournamentMainWinnerCarryResult.controller';
 import TournamentOlympicController from '../tournamentOlympic/tournamentOlympic.controller';
+import playerController from '../player/player.controller'
 
 const router = express.Router();
 
@@ -56,5 +57,7 @@ router.post('/createTournamentMainWinnerCarryResult', TournamentMainWinnerCarryR
 //tournament olympic
 router.get('/tournamentOlympic', TournamentOlympicController.getTournamentOlympic);
 router.post('/createTournamentOlympic', TournamentOlympicController.createTournamentOlympic);
+
+router.get('/player', playerController.getplayers);
 
 export default router;
